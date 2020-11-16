@@ -372,8 +372,7 @@ int CargoHold::Transfer(const Outfit *outfit, int amount, CargoHold &to)
 	// them to the given cargo hold if possible. If not possible, add the
 	// remainder back to this cargo hold, even if there is not space for it.
 	int removed = Remove(outfit, amount);
-	int added = to.
-		outfit, removed);
+	int added = to.Add(outfit, removed);
 	outfits[outfit] += removed - added;
 	
 	return added;
