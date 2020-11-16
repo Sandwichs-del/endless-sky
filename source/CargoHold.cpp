@@ -372,7 +372,8 @@ int CargoHold::Transfer(const Outfit *outfit, int amount, CargoHold &to)
 	// them to the given cargo hold if possible. If not possible, add the
 	// remainder back to this cargo hold, even if there is not space for it.
 	int removed = Remove(outfit, amount);
-	int added = to.Add(outfit, removed);
+	int added = to.
+		outfit, removed);
 	outfits[outfit] += removed - added;
 	
 	return added;
@@ -458,13 +459,13 @@ void CargoHold::TransferAll(CargoHold &to, bool transferPassengers)
 
 
 // Add the given amount of the given commodity.
-int CargoHold::Add(const string &commodity, int amount, bool force)
+int CargoHold::Add(const string &commodity, int amount)
 {
 	if(amount < 0)
 		return -Remove(commodity, -amount);
 	
-	// If this cargo hold has a size limit, apply it (unless forced).
-	if(!force && size >= 0)
+	// If this cargo hold has a size limit, apply it.
+	if(size >= 0)
 		amount = max(0, min(amount, Free()));
 	commodities[commodity] += amount;
 	return amount;
@@ -473,14 +474,14 @@ int CargoHold::Add(const string &commodity, int amount, bool force)
 
 
 // Add the given number of copies of the given outfit.
-int CargoHold::Add(const Outfit *outfit, int amount, bool force)
+int CargoHold::Add(const Outfit *outfit, int amount)
 {
 	if(amount < 0)
 		return -Remove(outfit, -amount);
 	
-	// If the outfit has mass and this cargo hold has a size limit, apply it (unless forced).
+	// If the outfit has mass and this cargo hold has a size limit, apply it.
 	double mass = outfit->Mass();
-	if(!force && size >= 0 && mass > 0.)
+	if(size >= 0 && mass > 0.)
 		amount = max(0, min(amount, static_cast<int>(Free() / mass)));
 	outfits[outfit] += amount;
 	return amount;
