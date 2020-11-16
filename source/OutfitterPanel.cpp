@@ -584,8 +584,11 @@ void OutfitterPanel::Sell(bool toCargo)
 			ship->Recharge();
 			if(toCargo)
 			{
-				// Transfer to cargo even if it would exceed the capacity
-				player.Cargo().Add(selectedOutfit, 1, true);
+				// Transfer to cargo even if it would exceed the capacity.
+				int size = player.Cargo().Size();
+				player.Cargo().SetSize(-1);
+				player.Cargo().Add(selectedOutfit);
+				player.Cargo().SetSize(size);
 			}
 			else
 			{
